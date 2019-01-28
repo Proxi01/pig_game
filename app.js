@@ -15,19 +15,25 @@ init();
 
 document.querySelector('.btn-roll').addEventListener('click', function () {
     if (isPlaying) {
-        var dice = Math.floor((Math.random() * 6) + 1);
+        var dice0 = Math.floor((Math.random() * 6) + 1);
+        var dice1 = Math.floor((Math.random() * 6) + 1);
         // var dice = 6;
-        var diceDOM = document.querySelector('.dice');
-        diceDOM.style.display = 'block';
-        diceDOM.src = `dice-${dice}.png`;
-        console.log(dice);
-        if (row == dice) {
+        var diceDOM = document.querySelectorAll('.dice');
+        diceDOM[0].style.display = 'block';
+        diceDOM[1].style.display = 'block';
+        diceDOM[0].src = `dice-${dice0}.png`;
+        diceDOM[1].src = `dice-${dice1}.png`;
+        console.log(dice1);
+        console.log(dice0);
+        if (row == dice0) {
             nextPlayer();
         }
-
-        else if (dice != 1) {
-            row = dice;
-            roundScores += dice;
+        else if(dice0 === 6 && dice0 === dice1){
+            nextPlayer();
+        }
+        else if (dice0 != 1 && dice1 != 1) {
+            row = dice0;
+            roundScores += (dice0 + dice1);
             document.querySelector(`#current-${activePlayer}`).textContent = roundScores;
         }
         else {
@@ -44,7 +50,8 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
         if (scores[activePlayer] >= score) {
             isPlaying = false;
             var winner = document.querySelector(`#name-${activePlayer}`).textContent = 'Winner!';
-            document.querySelector('.dice').style.display = 'none';
+            document.querySelectorAll('.dice')[0].style.display = 'none';
+            document.querySelectorAll('.dice')[1].style.display = 'none';
             document.querySelector(`.player-${activePlayer}-panel`).classList.add('winner');
             document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active');
             document.querySelector('.btn-roll').title = 'Start a new game, please.';
@@ -66,9 +73,10 @@ function init() {
 
     score = score = document.querySelector('.score').value;
     if (document.querySelector('.score').addEventListener('change', () => {
-        score = document.querySelector('.score').value;
-    }));
-    document.querySelector('.dice').style.display = 'none';
+            score = document.querySelector('.score').value;
+        }));
+    document.querySelectorAll('.dice')[0].style.display = 'none';
+    document.querySelectorAll('.dice')[1].style.display = 'none';
     document.querySelector(`#score-0`).textContent = 0;
     document.querySelector(`#score-1`).textContent = 0;
     document.getElementById('current-1').textContent = 0;
@@ -91,8 +99,8 @@ function nextPlayer() {
     document.getElementById('current-1').textContent = 0;
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
-    document.querySelector('.dice').style.display = 'none';
-
+    document.querySelectorAll('.dice')[0].style.display = 'none';
+    document.querySelectorAll('.dice')[1].style.display = 'none';
 }
 
 
